@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class ProviderDTO {
    private String firstName;
    private String lastName;
+   private String vertical;
    private String zipCode;
    private BigDecimal rate;
 

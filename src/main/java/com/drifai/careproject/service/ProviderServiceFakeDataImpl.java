@@ -8,27 +8,43 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
 @ConditionalOnProperty(prefix = "data", name = "type", havingValue = "faked")
 public class ProviderServiceFakeDataImpl implements ProviderService {
 
-    public ProviderDTO getProvider(String zipCode) {
+    public List<ProviderDTO> getProvider(String vertical, String zipCode) {
         log.info("Zip code: " + zipCode);
-        ProviderDTO providerDTO = fakeData(zipCode);
-        providerDTO.setLastName(obfuscate(providerDTO.getLastName()));
+        List<ProviderDTO> resultsList = fakeData(vertical, zipCode);
+        for(ProviderDTO  providerDTO : resultsList) {
+            providerDTO.setLastName(obfuscate(providerDTO.getLastName()));
+        }
 
-        return providerDTO;
+        return resultsList;
     }
 
-    private ProviderDTO fakeData(String inputZipCode) {
+    private List<ProviderDTO> fakeData(String inputVertical, String inputZipCode) {
+        List<ProviderDTO> resultList = new ArrayList<>();
         ProviderDTO providerDTO = ProviderDTO.builder()
                 .firstName("Susan")
                 .lastName("Woodruff")
                 .rate(new BigDecimal(50.00))
+                .vertical(inputVertical)
                 .zipCode(inputZipCode)
                 .build();
-        return providerDTO;
+        resultList.add(providerDTO);
+
+        providerDTO = ProviderDTO.builder()
+                .firstName("Marilyn")
+                .lastName("Quinn")
+                .rate(new BigDecimal(65.00))
+                .vertical(inputVertical)
+                .zipCode(inputZipCode)
+                .build();
+        resultList.add(providerDTO);
+        return resultList;
     }
 }

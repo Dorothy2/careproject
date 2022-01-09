@@ -20,8 +20,15 @@ public class ProviderControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void getHello() throws Exception {
-       // mvc.perform(MockMvcRequestBuilders.get("/api/v1/providers").accept(MediaType.APPLICATION_JSON))
-       //         .andExpect(status().isOk());
+    public void getProvidersJSON() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/api/v1/providers/SN/02494").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo(populateResultJSON())));
+    }
+
+    private String populateResultJSON() {
+        String result =
+                "[\"{\\\"firstName\\\":\\\"Susan\\\",\\\"lastName\\\":\\\"W.\\\",\\\"vertical\\\":\\\"SN\\\",\\\"zipCode\\\":\\\"02494\\\",\\\"rate\\\":50}\",\"{\\\"firstName\\\":\\\"Marilyn\\\",\\\"lastName\\\":\\\"Q.\\\",\\\"vertical\\\":\\\"SN\\\",\\\"zipCode\\\":\\\"02494\\\",\\\"rate\\\":65}\"]";
+        return result;
     }
 }
